@@ -1,0 +1,15 @@
+{
+    "$schema": "https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/schema/library.json",
+    "name": "cppfreertos",
+    "description": "A FreeRTOS C++ wrapper for ESP32",
+    "version": "0.1.0",
+    "export": {
+        "include": [
+            "src",
+            "include"
+        ]
+    },
+    "frameworks": [
+        "espidf"
+    ]
+}
