@@ -23,7 +23,7 @@ class BaseTask {
     BaseTask(BaseTask&&) = delete;
     BaseTask& operator=(BaseTask&&) = delete;
 
-    bool NotifyGiveFromISR();
+    void NotifyGiveFromISR(BaseType_t& higher_prio_task_woken);
 
     void Resume();
 

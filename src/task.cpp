@@ -1,4 +1,4 @@
-#include "cppfreertos/cppfreertos.h"
+#include "cppfreertos/task.h"
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
@@ -12,10 +12,8 @@ void BaseTask::Dispatch(void* param) {
 
 BaseTask::BaseTask(CbFunction callback) : callback_(callback) {}
 
-bool BaseTask::NotifyGiveFromISR() {
-    BaseType_t xHigherPriorityTaskWoken;
-    vTaskNotifyGiveFromISR(handle_, &xHigherPriorityTaskWoken);
-    return xHigherPriorityTaskWoken == pdTRUE;
+void BaseTask::NotifyGiveFromISR(BaseType_t& higher_prio_task_woken) {
+    vTaskNotifyGiveFromISR(handle_, &higher_prio_task_woken);
 }
 
 void BaseTask::Resume() {
