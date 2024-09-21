@@ -1,0 +1,7 @@
+build/
+.pio/
+.venv/
+
+.vscode/
+sdkconfig*
+*.lock
