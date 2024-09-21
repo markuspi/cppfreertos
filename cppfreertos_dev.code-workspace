@@ -1,0 +1,11 @@
+{
+    "folders": [
+        {
+            "path": "cppfreertos_dev"
+        }
+    ],
+    "settings": {
+        "git.openRepositoryInParentFolders": "always",
+        "platformio-ide.disablePIOHomeStartup": true,
+    }
+}
