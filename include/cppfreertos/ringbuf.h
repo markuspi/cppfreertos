@@ -48,7 +48,7 @@ class BaseRingBuffer {
 
     RingbufHandle_t GetHandle() const;
 
-    bool Send(const void* buffer, size_t item_size, TickType_t ticks_to_wait);
+    bool Send(const void* buffer, size_t item_size, TickType_t ticks_to_wait) const;
 
     template <typename T>
     bool Send(const T& item, TickType_t ticks_to_wait) {
@@ -62,8 +62,8 @@ class BaseRingBuffer {
 
 template <size_t TBufferSize>
 class StaticRingBuffer : public BaseRingBuffer {
-    uint8_t storage_[TBufferSize];
-    StaticRingbuffer_t ringbuffer_;
+    uint8_t storage_[TBufferSize] = {};
+    StaticRingbuffer_t ringbuffer_{};
 
    public:
     void Init(RingbufferType_t buffer_type) {

@@ -58,8 +58,8 @@ class BaseQueue {
 
 template <typename TItem, size_t TLength>
 class StaticQueue : public BaseQueue<TItem> {
-    StaticQueue_t queue_;
-    uint8_t storage_[sizeof(TItem) * TLength];
+    StaticQueue_t queue_{};
+    uint8_t storage_[sizeof(TItem) * TLength] = {};
 
    public:
     void Init() {

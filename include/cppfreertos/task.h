@@ -24,16 +24,17 @@ class BaseTask {
 
     TaskHandle_t GetHandle() const;
 
-    void NotifyGive(UBaseType_t index_to_notify = 0);
+    void NotifyGive(UBaseType_t index_to_notify = 0) const;
 
-    void NotifyGiveFromISR(BaseType_t& higher_prio_task_woken, UBaseType_t index_to_notify = 0);
+    void NotifyGiveFromISR(BaseType_t& higher_prio_task_woken,
+                           UBaseType_t index_to_notify = 0) const;
 
     static uint32_t NotifyTake(bool clear_count_on_exit, TickType_t ticks_to_wait,
                                UBaseType_t index_to_wait = 0);
 
-    void Resume();
+    void Resume() const;
 
-    void Suspend();
+    void Suspend() const;
 
     static void SuspendSelf();
 
@@ -44,19 +45,19 @@ class TaskJob {
     CbFunction callback_;
 
    public:
-    TaskJob(CbFunction callback);
+    explicit TaskJob(CbFunction callback);
 
     static void Dispatch(void* param);
 };
 
 template <size_t TStackSize>
 class StaticTask : public BaseTask {
-    StackType_t storage_[TStackSize];
+    StackType_t storage_[TStackSize] = {};
     StaticTask_t task_{};
     TaskJob job_;
 
    public:
-    StaticTask(CbFunction callback) : job_(std::move(callback)) {}
+    explicit StaticTask(CbFunction callback) : job_(callback) {}
 
     void Init(const char* name, UBaseType_t priority = 1, BaseType_t core_id = tskNO_AFFINITY) {
         handle_ = xTaskCreateStaticPinnedToCore(TaskJob::Dispatch, name, TStackSize, &job_,
@@ -68,7 +69,7 @@ class Task : public BaseTask {
     TaskJob job_;
 
    public:
-    Task(CbFunction callback);
+    explicit Task(CbFunction callback);
     ~Task();
 
     bool Init(const char* name, uint32_t stack_size, UBaseType_t priority = 1,

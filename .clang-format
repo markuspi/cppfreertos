@@ -11,3 +11,4 @@ DerivePointerAlignment: false
 SpaceAfterCStyleCast: true
 BraceWrapping:
   AfterStruct: false
+SeparateDefinitionBlocks: Always

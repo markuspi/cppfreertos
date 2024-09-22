@@ -23,7 +23,7 @@ RingbufHandle_t BaseRingBuffer::GetHandle() const {
     return handle_;
 }
 
-bool BaseRingBuffer::Send(const void* buffer, size_t item_size, TickType_t ticks_to_wait) {
+bool BaseRingBuffer::Send(const void* buffer, size_t item_size, TickType_t ticks_to_wait) const {
     return xRingbufferSend(handle_, buffer, item_size, ticks_to_wait) == pdTRUE;
 }
 
