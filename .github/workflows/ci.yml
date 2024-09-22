@@ -36,3 +36,11 @@ jobs:
         run: pip install --upgrade platformio
       - name: Build PlatformIO Project
         run: pio run
+      - name: Package
+        run: pio pkg pack -o cppfreertos-platformio.tar.gz
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: platformio
+          path: cppfreertos-platformio.tar.gz
+          retention-days: 5
