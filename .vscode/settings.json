@@ -1,0 +1,6 @@
+{
+    "editor.formatOnSave": true,
+    "platformio-ide.disablePIOHomeStartup": true,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true
+}

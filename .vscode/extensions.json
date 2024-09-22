@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "platformio.platformio-ide",
+        "redhat.vscode-yaml"
+    ],
+    "unwantedRecommendations": [
+        "ms-vscode.cpptools-extension-pack"
+    ]
+}
