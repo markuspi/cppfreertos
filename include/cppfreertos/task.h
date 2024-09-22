@@ -51,8 +51,8 @@ class TaskJob {
 
 template <size_t TStackSize>
 class StaticTask : public BaseTask {
-    StackType_t stack_storage_[TStackSize];
-    StaticTask_t task_storage_{};
+    StackType_t storage_[TStackSize];
+    StaticTask_t task_{};
     TaskJob job_;
 
    public:
@@ -60,7 +60,7 @@ class StaticTask : public BaseTask {
 
     void Init(const char* name, UBaseType_t priority = 1, BaseType_t core_id = tskNO_AFFINITY) {
         handle_ = xTaskCreateStaticPinnedToCore(TaskJob::Dispatch, name, TStackSize, &job_,
-                                                priority, stack_storage_, &task_storage_, core_id);
+                                                priority, storage_, &task_, core_id);
     }
 };
 

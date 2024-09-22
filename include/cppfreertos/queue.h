@@ -58,13 +58,13 @@ class BaseQueue {
 
 template <typename TItem, size_t TLength>
 class StaticQueue : public BaseQueue<TItem> {
-    StaticQueue_t queue_storage_;
-    uint8_t queue_buffer_[sizeof(TItem) * TLength];
+    StaticQueue_t queue_;
+    uint8_t storage_[sizeof(TItem) * TLength];
 
    public:
     void Init() {
-        this->handle_ = xQueueCreateStatic(static_cast<UBaseType_t>(TLength), sizeof(TItem),
-                                           queue_buffer_, &queue_storage_);
+        this->handle_ =
+            xQueueCreateStatic(static_cast<UBaseType_t>(TLength), sizeof(TItem), storage_, &queue_);
     }
 };
 
