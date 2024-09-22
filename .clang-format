@@ -12,3 +12,4 @@ SpaceAfterCStyleCast: true
 BraceWrapping:
   AfterStruct: false
 SeparateDefinitionBlocks: Always
+InsertNewlineAtEOF: true
