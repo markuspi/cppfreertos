@@ -1,4 +1,4 @@
-version: "0.1.0"
+version: "0.1.1"
 description: "A FreeRTOS C++ wrapper for ESP32"
 dependencies:
   idf: ">=5.0"

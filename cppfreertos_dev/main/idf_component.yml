@@ -1,5 +1,0 @@
-dependencies:
-  idf: ">=5.0"
-  markuspi/cppfreertos:
-    version: "^0.1.0"
-    override_path: "../cppfreertos/"

@@ -5,3 +5,4 @@ build/
 .vscode/
 sdkconfig*
 *.lock
+managed_components/
