@@ -12,6 +12,10 @@ void BaseTask::Dispatch(void* param) {
 
 BaseTask::BaseTask(CbFunction callback) : callback_(callback) {}
 
+TaskHandle_t BaseTask::GetHandle() const {
+    return handle_;
+}
+
 void BaseTask::NotifyGiveFromISR(BaseType_t& higher_prio_task_woken) {
     vTaskNotifyGiveFromISR(handle_, &higher_prio_task_woken);
 }
@@ -28,13 +32,17 @@ void BaseTask::SuspendSelf() {
     vTaskSuspend(nullptr);
 }
 
+void BaseTask::Delay(TickType_t delay_ms) {
+    vTaskDelay(pdMS_TO_TICKS(delay_ms));
+}
+
 Task::~Task() {
     if (handle_ != nullptr) {
         vTaskDelete(handle_);
     }
 }
 
-bool Task::Init(const char* name, UBaseType_t priority, uint32_t stack_size, BaseType_t core_id) {
+bool Task::Init(const char* name, uint32_t stack_size, UBaseType_t priority, BaseType_t core_id) {
     auto status = xTaskCreatePinnedToCore(BaseTask::Dispatch, name, stack_size, this, priority,
                                           &handle_, core_id);
     if (status == pdPASS) {

@@ -23,6 +23,8 @@ class BaseTask {
     BaseTask(BaseTask&&) = delete;
     BaseTask& operator=(BaseTask&&) = delete;
 
+    TaskHandle_t GetHandle() const;
+
     void NotifyGiveFromISR(BaseType_t& higher_prio_task_woken);
 
     void Resume();
@@ -30,6 +32,8 @@ class BaseTask {
     void Suspend();
 
     static void SuspendSelf();
+
+    static void Delay(TickType_t delay_ms);
 };
 
 template <size_t TStackSize>
@@ -40,7 +44,7 @@ class StaticTask : public BaseTask {
    public:
     using BaseTask::BaseTask;
 
-    void Init(const char* name, UBaseType_t priority, BaseType_t core_id = tskNO_AFFINITY) {
+    void Init(const char* name, UBaseType_t priority = 1, BaseType_t core_id = tskNO_AFFINITY) {
         handle_ = xTaskCreateStaticPinnedToCore(BaseTask::Dispatch, name, TStackSize, this,
                                                 priority, stack_storage_, &task_storage_, core_id);
     }
@@ -52,7 +56,7 @@ class Task : public BaseTask {
 
     ~Task();
 
-    bool Init(const char* name, UBaseType_t priority, uint32_t stack_size,
+    bool Init(const char* name, uint32_t stack_size, UBaseType_t priority = 1,
               BaseType_t core_id = tskNO_AFFINITY);
 };
 

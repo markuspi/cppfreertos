@@ -10,7 +10,19 @@ class BaseQueue {
    protected:
     QueueHandle_t handle_{nullptr};
 
+    BaseQueue() = default;
+
    public:
+    ~BaseQueue() = default;
+    BaseQueue(const BaseQueue&) = delete;
+    BaseQueue& operator=(const BaseQueue&) = delete;
+    BaseQueue(BaseQueue&&) = delete;
+    BaseQueue& operator=(BaseQueue&&) = delete;
+
+    QueueHandle_t GetHandle() const {
+        return handle_;
+    }
+
     bool Receive(TItem& item, TickType_t ticksToWait) {
         return xQueueReceive(handle_, &item, ticksToWait) == pdTRUE;
     }
@@ -23,7 +35,7 @@ class BaseQueue {
         xQueueOverwrite(handle_, &item);
     }
 
-    void Overwrite(const TItem& item, BaseType_t& higher_prio_task_woken) {
+    void OverwriteFromISR(const TItem& item, BaseType_t& higher_prio_task_woken) {
         xQueueOverwriteFromISR(handle_, &item, &higher_prio_task_woken);
     }
 
@@ -51,7 +63,23 @@ class StaticQueue : public BaseQueue<TItem> {
 
    public:
     void Init() {
-        this->handle_ = xQueueCreateStatic(TLength, sizeof(TItem), queue_buffer_, &queue_storage_);
+        this->handle_ = xQueueCreateStatic(static_cast<UBaseType_t>(TLength), sizeof(TItem),
+                                           queue_buffer_, &queue_storage_);
+    }
+};
+
+template <typename TItem>
+class Queue : public BaseQueue<TItem> {
+   public:
+    ~Queue() {
+        if (this->handle_ != nullptr) {
+            vQueueDelete(this->handle_);
+        }
+    }
+
+    bool Init(size_t length) {
+        this->handle_ = xQueueCreate(static_cast<UBaseType_t>(length), sizeof(TItem));
+        return this->handle_ != nullptr;
     }
 };
 

@@ -6,14 +6,27 @@
 
 using namespace cppfreertos;
 
-StaticTask<4096> myTask{[]() {}};
-StaticQueue<int, 5> myQueue;
+static constexpr auto TAG = "main";
+
+StaticQueue<int, 1> queue;
+StaticTask<4096> consumer{[]() {
+    int item;
+    while (true) {
+        if (queue.Receive(item, portMAX_DELAY)) {
+            ESP_LOGI(TAG, "Received: %d", item);
+        }
+    }
+}};
+
+Task producer{[]() {
+    for (int i = 0; true; i++) {
+        queue.SendToBack(i, portMAX_DELAY);
+        Task::Delay(1000);
+    }
+}};
 
 extern "C" void app_main() {
-    myTask.Init("mytask", tskIDLE_PRIORITY);
-    myQueue.Init();
-
-    myQueue.SendToBack(5, portMAX_DELAY);
-    int x;
-    myQueue.Receive(x, portMAX_DELAY);
+    queue.Init();
+    consumer.Init("consumer");
+    producer.Init("producer", 4096);
 }
