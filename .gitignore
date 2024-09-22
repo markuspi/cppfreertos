@@ -1,8 +1,9 @@
-build/
+*build*/
 .pio/
 .venv/
 
 .vscode/
+.idea/
 sdkconfig*
 *.lock
 managed_components/
