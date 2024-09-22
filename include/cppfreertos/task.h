@@ -5,9 +5,9 @@
 
 #include <utility>
 
-namespace cppfreertos {
+#include "utils.h"
 
-using CbFunction = void (*)();
+namespace cppfreertos {
 
 class BaseTask {
    protected:
@@ -41,32 +41,23 @@ class BaseTask {
     static void Delay(TickType_t delay_ms);
 };
 
-class TaskJob {
-    CbFunction callback_;
-
-   public:
-    explicit TaskJob(CbFunction callback);
-
-    static void Dispatch(void* param);
-};
-
 template <size_t TStackSize>
 class StaticTask : public BaseTask {
     StackType_t storage_[TStackSize] = {};
     StaticTask_t task_{};
-    TaskJob job_;
+    Runnable runnable_;
 
    public:
-    explicit StaticTask(CbFunction callback) : job_(callback) {}
+    explicit StaticTask(CbFunction callback) : runnable_(callback) {}
 
     void Init(const char* name, UBaseType_t priority = 1, BaseType_t core_id = tskNO_AFFINITY) {
-        handle_ = xTaskCreateStaticPinnedToCore(TaskJob::Dispatch, name, TStackSize, &job_,
+        handle_ = xTaskCreateStaticPinnedToCore(Runnable::Dispatch, name, TStackSize, &runnable_,
                                                 priority, storage_, &task_, core_id);
     }
 };
 
 class Task : public BaseTask {
-    TaskJob job_;
+    Runnable runnable_;
 
    public:
     explicit Task(CbFunction callback);

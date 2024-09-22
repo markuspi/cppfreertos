@@ -5,6 +5,7 @@
 #include "cppfreertos/ringbuf.h"
 #include "cppfreertos/semphr.h"
 #include "cppfreertos/task.h"
+#include "cppfreertos/timers.h"
 
 using namespace cppfreertos;
 
@@ -14,22 +15,24 @@ StaticQueue<int, 1> queue;
 RingBuffer ringbuf;
 Semaphore sem;
 
-StaticTask<4096> consumer{[]() {
+#define NO_RETURN __attribute__((__noreturn__))
+
+StaticTask<4096> consumer{[]() NO_RETURN {
     int item;
     while (true) {
         BaseTask::NotifyTake(true, pdMS_TO_TICKS(100));
         if (queue.Receive(item, 0)) {
             ESP_LOGI(TAG, "Received from queue: %d", item);
         }
-        if (auto item = ringbuf.Receive(0)) {
-            ESP_LOGI(TAG, "Received from buffer: %d bytes: %lu", item.size(),
-                     *item.data<uint32_t>());
-            ESP_LOG_BUFFER_HEX(TAG, item.data<char>(), item.size());
+        if (auto rb_item = ringbuf.Receive(0)) {
+            ESP_LOGI(TAG, "Received from buffer: %d bytes: %lu", rb_item.size(),
+                     *rb_item.data<uint32_t>());
+            ESP_LOG_BUFFER_HEX(TAG, rb_item.data<char>(), rb_item.size());
         }
     }
 }};
 
-Task producer{[]() {
+Task producer{[]() NO_RETURN {
     for (int i = 0; true; i++) {
         queue.SendToBack(i, portMAX_DELAY);
         consumer.NotifyGive();

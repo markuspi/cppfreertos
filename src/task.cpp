@@ -3,6 +3,8 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
+#include <utility>
+
 namespace cppfreertos {
 
 TaskHandle_t BaseTask::GetHandle() const {
@@ -40,7 +42,7 @@ void BaseTask::Delay(TickType_t delay_ms) {
     vTaskDelay(pdMS_TO_TICKS(delay_ms));
 }
 
-Task::Task(CbFunction callback) : job_(callback) {}
+Task::Task(CbFunction callback) : runnable_(callback) {}
 
 Task::~Task() {
     if (handle_ != nullptr) {
@@ -49,7 +51,7 @@ Task::~Task() {
 }
 
 bool Task::Init(const char* name, uint32_t stack_size, UBaseType_t priority, BaseType_t core_id) {
-    const auto status = xTaskCreatePinnedToCore(TaskJob::Dispatch, name, stack_size, &job_,
+    const auto status = xTaskCreatePinnedToCore(Runnable::Dispatch, name, stack_size, &runnable_,
                                                 priority, &handle_, core_id);
     if (status == pdPASS) {
         return true;
@@ -57,12 +59,5 @@ bool Task::Init(const char* name, uint32_t stack_size, UBaseType_t priority, Bas
     handle_ = nullptr;
     return false;
 }
-
-void TaskJob::Dispatch(void* param) {
-    static_cast<TaskJob*>(param)->callback_();
-    abort();
-}
-
-TaskJob::TaskJob(CbFunction callback) : callback_(callback) {}
 
 }  // namespace cppfreertos
