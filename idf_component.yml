@@ -1,4 +1,5 @@
-version: "0.1.1"
+version: "0.1.2"
 description: "A FreeRTOS C++ wrapper for ESP32"
 dependencies:
   idf: ">=5.0"
+repository: "https://github.com/markuspi/cppfreertos.git"
