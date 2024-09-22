@@ -8,3 +8,4 @@
 sdkconfig*
 *.lock
 managed_components/
+dist/

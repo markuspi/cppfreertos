@@ -3,3 +3,10 @@ description: "A FreeRTOS C++ wrapper for ESP32"
 dependencies:
   idf: ">=5.0"
 repository: "https://github.com/markuspi/cppfreertos.git"
+files:
+  exclude:
+    - "*build*/**/*"
+    - ".venv/**/*"
+    - "main/**/*"
+    - "platformio.ini"
+    - "sdkconfig*"
