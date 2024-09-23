@@ -18,13 +18,7 @@ jobs:
         with:
           esp_idf_version: v5.0
           target: esp32
-          command: idf.py build -D DEV_ENVIRONMENT=1 && compote component pack -o cppfreertos
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: espidf
-          path: dist/*.tgz
-          retention-days: 5
+          command: idf.py build -D DEV_ENVIRONMENT=1
 
   platformio:
     name: PlatformIO
