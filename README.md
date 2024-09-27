@@ -4,7 +4,7 @@ A FreeRTOS C++ wrapper for ESP32. Compatible with PlatformIO and ESP-IDF.
 
 ## Installation
 
-### Platformio
+### PlatformIO
 
 In your platformio.ini file, add this repository to `lib_deps`:
 
