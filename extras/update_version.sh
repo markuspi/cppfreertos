@@ -11,3 +11,5 @@ REPO_ROOT=$(dirname "$0")/..
 
 sed -i "s/^version: \".*\"/version: \"$1\"/" "$REPO_ROOT/idf_component.yml"
 sed -i "s/\"version\": \".*\"/\"version\": \"$1\"/" "$REPO_ROOT/library.json"
+sed -i "s/\\.git#.*/.git#v$1/" "$REPO_ROOT/README.md"
+sed -i "s/version: .*/version: v$1/" "$REPO_ROOT/README.md"
