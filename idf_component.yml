@@ -6,5 +6,6 @@ files:
     - "*build*/**/*"
     - ".venv/**/*"
     - "main/**/*"
+    - "extras/**/*"
     - "platformio.ini"
     - "sdkconfig*"

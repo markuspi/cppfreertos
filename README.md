@@ -8,7 +8,7 @@ A FreeRTOS C++ wrapper for ESP32. Compatible with PlatformIO and ESP-IDF.
 
 In your platformio.ini file, add this repository to `lib_deps`:
 
-```bash
+```ini
 [env:some_env]
 platform = espressif32
 framework = ...
