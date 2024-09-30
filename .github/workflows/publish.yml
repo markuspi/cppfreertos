@@ -1,0 +1,20 @@
+name: Publish Package
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  esp-idf:
+    name: Publish ESP-IDF
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Upload component to the component registry
+        uses: espressif/upload-components-ci-action@v1
+        with:
+          namespace: markuspi
+          name: cppfreertos
+          api_token: ${{ secrets.IDF_COMPONENT_API_TOKEN }}
