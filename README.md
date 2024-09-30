@@ -19,7 +19,7 @@ lib_deps =
 
 ### ESP-IDF
 
-[![Component Registry](https://components.espressif.com/components/espressif/mdns/badge.svg)](https://components.espressif.com/components/espressif/mdns)
+[![Component Registry](https://components.espressif.com/components/markuspi/cppfreertos/badge.svg)](https://components.espressif.com/components/markuspi/cppfreertos)
 
 In your component directory (either `main` or any other component in `components/<name>`), edit or create the `idf_component.yml` manifest file and add `markuspi/cppfreertos` as a dependency:
 
